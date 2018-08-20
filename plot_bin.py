@@ -16,6 +16,7 @@ class ReadPlot(object):
         self.__num_columns = len(columns)
         self.__data = pandas.read_csv(datafile,header=None,encoding='utf-8',skipinitialspace=True,sep='\t',usecols=columns)
         self.__average = self.__data.mean()
+        print(self.__average)
 #            print(self.__data[i])
 #        print(self.__data)
 #        self.__data_array = []
@@ -32,10 +33,10 @@ if __name__ == '__main__':
     class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter,argparse.MetavarTypeHelpFormatter):
         pass
     parser = argparse.ArgumentParser(description="Plot score.", formatter_class=CustomFormatter)
-    parser.add_argument('--file', '--datafile', type=str, dest='datafile', nargs='?', default='score.csv', help="input file")
-    parser.add_argument('--fig', type=str, dest='figfile', nargs='?', default='stat.png', help="output figure file (png)")
+    parser.add_argument('--file', '--datafile', type=str, dest='datafile', nargs=1, default='score.csv', help="input file")
+    parser.add_argument('--fig', type=str, dest='figfile', nargs=1, default='stat.png', help="output figure file (png)")
     parser.add_argument('--columns', type=int, dest='columns', nargs='+', default=[0], help="column of data")
-    parser.add_argument('--sep', type=str, dest='sep', nargs='?', default='\t', help="specify data separater")
+    parser.add_argument('--sep', type=str, dest='sep', nargs=1, default='\t', help="specify data separater")
 
     args = parser.parse_args()
 

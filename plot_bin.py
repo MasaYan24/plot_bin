@@ -39,10 +39,12 @@ class ReadPlot(object):
         fig = plt.figure()
         ax = fig.add_subplot(1,1,1)
 
+        ax.set_xticks(range(0,110,10))
         ax.set_xlabel('score')
         ax.set_ylabel('number of people')
         ax.set_xlim([0,100])
-        ax.hist(self.__data.values,range=(0,100),rwidth=1.0)
+        #ax.hist(self.__data.values,range=(0,100),rwidth=1.0)
+        ax.hist(self.__data.values,range=(0,100))
         for i in self.__data.columns:
             ax.axvline(self.__average[i],color=cmap(i),alpha=0.5)
         try:

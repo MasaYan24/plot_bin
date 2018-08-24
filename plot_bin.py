@@ -8,11 +8,13 @@ import subprocess
 import sys
 
 class ReadPlot(object):
-    def __init__(self,datafile="score.csv",figfile="score.png",cols=[0],sep='\t',trim=True,labels=None):
+    def __init__(self,datafile="score.csv",figfile="score.png",cols=[0],sep='\t',trim=True,labels=None,flag_ave_label=False):
         self.__datafile = datafile
         self.__figfile = figfile
         self.__readfile(datafile=datafile,columns=cols)
         self.__trim = trim
+        self.__flag_ave_label = flag_ave_label
+        print("#################",self.__flag_ave_label)
         if labels is not None:
             self.__labels = labels
 
@@ -33,7 +35,11 @@ class ReadPlot(object):
 
 
     def plot(self):
+        if self.__flag_ave_label:
+            for i in range(len(self.__labels)):
+                self.__labels[i] = self.__labels[i] + "(" + str(self.__average[i]) + ")"
         font = {'family': 'Meiryo'}
+        #font = {'family': 'Osaka'}
         matplotlib.rc('font', **font)
         cmap = plt.get_cmap("tab10")
         fig = plt.figure()
@@ -64,10 +70,11 @@ if __name__ == '__main__':
     parser.add_argument('--fig','--figfile', type=str, dest='figfile', nargs=1, default='score.png', help="output figure file (png)")
     parser.add_argument('--columns','--cols', type=int, dest='columns', nargs='+', default=[0], help="column of data")
     parser.add_argument('--labels', type=str, dest='labels', nargs='+', default=None, help="title column")
+    parser.add_argument('--avelabels', action="store_true", dest='flagavelabel', help="add average value to labels")
     parser.add_argument('--notrim', action="store_false", help="do not round-up/down score")
     parser.add_argument('--sep', type=str, dest='sep', nargs=1, default='\t', help="specify data separater in datafile")
 
     args = parser.parse_args()
 
-    stat_inst = ReadPlot(datafile=args.datafile,figfile=args.figfile,cols=args.columns,sep=args.sep,trim=args.notrim,labels=args.labels)
+    stat_inst = ReadPlot(datafile=args.datafile,figfile=args.figfile,cols=args.columns,sep=args.sep,trim=args.notrim,labels=args.labels,flag_ave_label=args.flagavelabel)
     stat_inst.plot()
